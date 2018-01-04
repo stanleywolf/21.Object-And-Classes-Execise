@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _03.intersectionOfCircles
+{
+    class Circle
+    {
+        public List<int> Center { get; set; }
+        public int Radius { get; set; }
+
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Circle circleOne = ReadCircle();
+            Circle circleTwo = ReadCircle();
+           
+            if (!DistanceBetweenCircle(circleOne, circleTwo))
+            {
+                Console.WriteLine("Yes");
+            }
+            else
+            {
+                Console.WriteLine("No");
+            }
+        }
+
+        private static bool DistanceBetweenCircle(Circle circleOne, Circle circleTwo)
+        {
+           var distance= CalculateDistance(circleOne, circleTwo);
+            if (distance <= circleOne.Radius + circleTwo.Radius)
+            {
+                return false;
+            }
+            else
+            {
+            return true;
+            }
+        }
+
+        private static double CalculateDistance(Circle circleOne, Circle circleTwo)
+        {
+            var distance = Math.Sqrt(Math.Pow(circleOne.Center[0] - circleTwo.Center[1], 2) +                  Math.Pow(circleOne.Center[1] - circleTwo.Center[1], 2));
+            return distance;
+        }
+
+        private static Circle ReadCircle()
+        {
+            int[] input = Console.ReadLine().Split(' ')
+                .Select(int.Parse).ToArray();
+            List<int>center=new List<int>();
+            Circle circleToRead=new Circle();
+            circleToRead.Center=new List<int>();;
+            circleToRead.Center.Add(input[0]);
+            circleToRead.Center.Add(input[1]);
+            circleToRead.Radius = input[2];
+            return circleToRead;
+        }
+    }
+}
