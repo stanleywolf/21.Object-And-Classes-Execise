@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _05.bookLibrary
+{
+    class Program
+    {
+        class Library
+        {
+            public string Name { get; set; }
+            public List<Book> Books { get; set; }
+        
+        }
+        class Book
+        {
+            public string Title { get; set; }
+            public string Author { get; set; }
+            public string Publisher { get; set; }
+            public DateTime ReleaseDate { get; set; }
+            public int ISBNNumbet { get; set; }
+            public decimal Price { get; set; }
+        }
+        static void Main(string[] args)
+        {
+            Library myLibrary=new Library();
+            myLibrary.Books=new List<Book>();
+            int n = int.Parse(Console.ReadLine());
+
+            var sum = 0;
+            for (int i = 0; i < n; i++)
+            {
+                var input = Console.ReadLine().Split(' ');
+                Book book=new Book();
+                decimal price = decimal.Parse(input.Last());
+                string author = input[1];
+
+                book.Author = author;
+                book.Price = price;
+
+                myLibrary.Books.Add(book);
+            }
+            Dictionary<string,decimal>filtredBook=new Dictionary<string, decimal>();
+            for (int i = 0; i < myLibrary.Books.Count; i++)
+            {
+                if (!filtredBook.ContainsKey(myLibrary.Books[i].Author))
+                {
+                    filtredBook.Add(myLibrary.Books[i].Author,0);
+                }
+                filtredBook[myLibrary.Books[i].Author] += myLibrary.Books[i].Price;
+            }
+            foreach (var book in filtredBook.OrderByDescending(x => x.Value).ThenBy(x => x.Key))
+            {
+                Console.WriteLine($"{book.Key} -> {book.Value:f2}");       
+            }
+        }
+    }
+}
