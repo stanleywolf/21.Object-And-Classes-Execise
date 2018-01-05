@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _05.bookLibrary
+{
+    class Program
+    {
+        class Library
+        {
+            public string Name { get; set; }
+            public List<Book> Books { get; set; }
+
+        }
+        class Book
+        {
+            public string Title { get; set; }
+            public string Author { get; set; }
+            public string Publisher { get; set; }
+            public DateTime ReleaseDate { get; set; }
+            public int ISBNNumbet { get; set; }
+            public decimal Price { get; set; }
+        }
+        static void Main(string[] args)
+        {
+            Library myLibrary = new Library();
+            myLibrary.Books = new List<Book>();
+            int n = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < n; i++)
+            {
+                var input = Console.ReadLine().Split(' ');
+                Book book = new Book();
+                decimal price = decimal.Parse(input.Last());
+                string author = input[1];
+                string title = input[0];
+                DateTime date=DateTime.ParseExact(input[3],"dd.MM.yyyy",CultureInfo.InvariantCulture);
+
+                book.Author = author;
+                book.Price = price;
+                book.Title = title;
+                book.ReleaseDate = date;
+
+                myLibrary.Books.Add(book);
+            }
+
+            DateTime releaseDate=DateTime.ParseExact(Console.ReadLine(),"dd.MM.yyyy",CultureInfo.InvariantCulture);
+
+            Dictionary<string, DateTime> filtredBook = new Dictionary<string, DateTime>();
+            for (int i = 0; i < myLibrary.Books.Count; i++)
+            {
+                if (myLibrary.Books[i].ReleaseDate > releaseDate)
+                {
+                    filtredBook.Add(myLibrary.Books[i].Title, myLibrary.Books[i].ReleaseDate);
+                }
+            }
+            foreach (var book in filtredBook.OrderBy(x => x.Value).ThenBy(x => x.Key))
+            {
+                Console.WriteLine($"{book.Key} -> {book.Value.ToString("dd.MM.yyyy")}");
+            }
+        }
+    }
+}
